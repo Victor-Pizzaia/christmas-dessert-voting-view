@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
+import { Button, Card } from "@/components/ui";
 
 interface VotingSession {
   id: number;
@@ -75,17 +76,17 @@ export default function VotingPage() {
       <h1 className="text-2xl font-bold text-zinc-900">Voting</h1>
 
       {!activeSession ? (
-        <div className="rounded-lg bg-white p-6 text-center shadow-sm">
+        <Card className="text-center">
           <p className="text-zinc-500">No active voting session</p>
-        </div>
+        </Card>
       ) : (
         <>
-          <div className="rounded-lg bg-white p-4 shadow-sm">
+          <Card>
             <p className="text-sm text-zinc-600">
               Voting session:{" "}
               <span className="font-semibold">{activeSession.year}</span>
             </p>
-          </div>
+          </Card>
 
           <section className="space-y-4">
             <h2 className="text-lg font-semibold text-zinc-800">
@@ -93,10 +94,7 @@ export default function VotingPage() {
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {subscribed.map((dessert) => (
-                <div
-                  key={dessert.id}
-                  className="rounded-lg bg-white p-4 shadow-sm"
-                >
+                <Card key={dessert.id}>
                   <h3 className="font-semibold text-zinc-900">
                     {dessert.name}
                   </h3>
@@ -105,13 +103,13 @@ export default function VotingPage() {
                       {dessert.description}
                     </p>
                   )}
-                  <button
+                  <Button
+                    size="sm"
                     onClick={() => handleVote(dessert.id)}
-                    className="mt-3 rounded bg-green-600 px-3 py-1 text-sm text-white hover:bg-green-700"
                   >
                     Vote
-                  </button>
-                </div>
+                  </Button>
+                </Card>
               ))}
             </div>
           </section>
@@ -123,10 +121,7 @@ export default function VotingPage() {
               </h2>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {unsubscribed.map((dessert) => (
-                  <div
-                    key={dessert.id}
-                    className="rounded-lg bg-white p-4 shadow-sm"
-                  >
+                  <Card key={dessert.id}>
                     <h3 className="font-semibold text-zinc-900">
                       {dessert.name}
                     </h3>
@@ -135,13 +130,14 @@ export default function VotingPage() {
                         {dessert.description}
                       </p>
                     )}
-                    <button
+                    <Button
+                      variant="secondary"
+                      size="sm"
                       onClick={() => handleSubscribe(dessert.id)}
-                      className="mt-3 rounded bg-zinc-100 px-3 py-1 text-sm text-zinc-700 hover:bg-zinc-200"
                     >
                       Subscribe
-                    </button>
-                  </div>
+                    </Button>
+                  </Card>
                 ))}
               </div>
             </section>

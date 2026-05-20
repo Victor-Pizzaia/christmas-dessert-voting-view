@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { api } from "@/lib/api";
+import { Button, Card } from "@/components/ui";
 
 interface Dessert {
   id: number;
@@ -41,43 +42,37 @@ export default function DessertsPage() {
     <div className="space-y-8">
       <h1 className="text-2xl font-bold text-zinc-900">Desserts</h1>
 
-      <form
-        onSubmit={handleCreate}
-        className="space-y-4 rounded-lg bg-white p-6 shadow-sm"
-      >
-        <h2 className="text-lg font-semibold text-zinc-800">
-          Add new dessert
-        </h2>
+      <Card>
+        <form onSubmit={handleCreate} className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-800">
+            Add new dessert
+          </h2>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-zinc-700">Name</label>
-          <input
-            type="text"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-          />
-        </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-700">Name</label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            />
+          </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-zinc-700">
-            Description
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-          />
-        </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-700">
+              Description
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
-        >
-          Create
-        </button>
-      </form>
+          <Button type="submit">Create</Button>
+        </form>
+      </Card>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {desserts.map((dessert) => (
@@ -91,12 +86,13 @@ export default function DessertsPage() {
                 {dessert.description}
               </p>
             )}
-            <button
+            <Button
+              variant="danger"
+              size="sm"
               onClick={() => handleDelete(dessert.id)}
-              className="mt-3 text-sm text-red-600 hover:text-red-800"
             >
               Delete
-            </button>
+            </Button>
           </div>
         ))}
       </div>
