@@ -27,12 +27,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (getToken()) {
       const stored = getStoredUser();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (stored) setUser(stored);
     }
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const response = await api.post("/auth/login", { email, password });
+    const response = await api.post("/users/login", { email, password });
     const { token, user: userData } = response.data;
     setToken(token);
     setStoredUser(userData);
@@ -41,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = useCallback(
     async (name: string, email: string, cpf: string, password: string) => {
-      const response = await api.post("/auth/register", {
+      const response = await api.post("/users", {
         name,
         email,
         cpf,
