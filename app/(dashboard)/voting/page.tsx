@@ -17,7 +17,6 @@ interface Dessert {
 }
 
 export default function VotingPage() {
-  const [sessions, setSessions] = useState<VotingSession[]>([]);
   const [activeSession, setActiveSession] = useState<VotingSession | null>(
     null
   );
@@ -25,8 +24,7 @@ export default function VotingPage() {
   const [available, setAvailable] = useState<Dessert[]>([]);
 
   async function fetchSessions() {
-    const response = await api.get("/votings");
-    setSessions(response.data);
+    const response = await api.get("/voting");
     const open = response.data.find(
       (s: VotingSession) => s.isOpenToVote
     );
@@ -34,7 +32,7 @@ export default function VotingPage() {
   }
 
   async function fetchSubscribed(sessionId: number) {
-    const response = await api.get(`/votings/${sessionId}/subscribed`);
+    const response = await api.get(`/voting/${sessionId}/subscribed`);
     setSubscribed(response.data);
   }
 
@@ -44,17 +42,19 @@ export default function VotingPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSessions();
     fetchAvailableDesserts();
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (activeSession) fetchSubscribed(activeSession.id);
   }, [activeSession]);
 
   async function handleSubscribe(dessertId: number) {
     if (!activeSession) return;
-    await api.post(`/votings/${activeSession.id}/subscribe`, {
+    await api.patch(`/voting/${activeSession.id}/subscribe`, {
       dessertId,
     });
     fetchSubscribed(activeSession.id);
@@ -62,7 +62,7 @@ export default function VotingPage() {
 
   async function handleVote(dessertId: number) {
     if (!activeSession) return;
-    await api.post(`/votings/${activeSession.id}/vote`, {
+    await api.post(`/voting/${activeSession.id}/vote`, {
       dessertId,
     });
   }
