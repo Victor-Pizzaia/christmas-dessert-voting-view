@@ -1,11 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { VotePanel } from "./VotePanel";
-import type { DessertInSession } from "@/types/voting";
 
-const subscribed: DessertInSession[] = [
-  { id: 1, name: "Pudim", description: "Tasty" },
-  { id: 2, name: "Bolo" },
+const subscribed = [
+  { id: "1", name: "Pudim" },
+  { id: "2", name: "Bolo" },
 ];
 
 describe("VotePanel", () => {
@@ -37,7 +36,7 @@ describe("VotePanel", () => {
     expect(screen.getAllByText("Vote")).toHaveLength(2);
   });
 
-  it("calls onVote when vote button is clicked", async () => {
+  it("calls onVote with dessert id", async () => {
     const onVote = vi.fn();
     render(
       <VotePanel
@@ -50,7 +49,7 @@ describe("VotePanel", () => {
 
     const voteButtons = screen.getAllByText("Vote");
     await userEvent.click(voteButtons[0]);
-    expect(onVote).toHaveBeenCalledWith(1);
+    expect(onVote).toHaveBeenCalledWith("1");
   });
 
   it("renders empty message when no subscribed desserts", () => {

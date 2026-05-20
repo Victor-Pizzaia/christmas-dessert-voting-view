@@ -12,8 +12,8 @@ vi.mock("@/lib/api", () => ({
 }));
 
 const mockDesserts: Dessert[] = [
-  { id: 1, name: "Pudim", description: "Delicious", subscribed: true },
-  { id: 2, name: "Bolo", description: "Chocolate" },
+  { id: "1", name: "Pudim", description: "Delicious" },
+  { id: "2", name: "Bolo" },
 ];
 
 describe("useDesserts", () => {
@@ -62,7 +62,7 @@ describe("useDesserts", () => {
   });
 
   it("creates a dessert and returns it", async () => {
-    const newDessert: Dessert = { id: 3, name: "Mousse" };
+    const newDessert: Dessert = { id: "3", name: "Mousse" };
     vi.mocked(api.post).mockResolvedValue({ data: newDessert });
 
     const { result } = renderHook(() => useDesserts());
@@ -95,11 +95,11 @@ describe("useDesserts", () => {
     await waitFor(() => expect(result.current.desserts).toHaveLength(2));
 
     await act(async () => {
-      await result.current.deleteDessert(1);
+      await result.current.deleteDessert("1");
     });
 
     expect(result.current.desserts).toHaveLength(1);
-    expect(result.current.desserts[0].id).toBe(2);
+    expect(result.current.desserts[0].id).toBe("2");
   });
 
   it("removes dessert from state even if delete API fails", async () => {
@@ -115,7 +115,7 @@ describe("useDesserts", () => {
     await waitFor(() => expect(result.current.desserts).toHaveLength(2));
 
     await act(async () => {
-      await result.current.deleteDessert(1);
+      await result.current.deleteDessert("1");
     });
 
     expect(result.current.desserts).toHaveLength(1);

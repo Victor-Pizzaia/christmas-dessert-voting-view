@@ -8,8 +8,8 @@ export default function CreateVotingSessionPage() {
   const router = useRouter();
   const { createSession } = useVoting();
 
-  async function handleCreate(year: number) {
-    await createSession({ year });
+  async function handleCreate(name: string, description: string, closingDate: string) {
+    await createSession({ name, description: description || undefined, closingDate });
     router.push("/voting");
   }
 

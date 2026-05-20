@@ -1,9 +1,6 @@
 export interface User {
-  id: number;
   name: string;
-  email: string;
-  cpf: string;
-  favoriteSweets?: string;
+  favorite_sweets: string[];
 }
 
 export interface LoginRequest {
@@ -15,13 +12,13 @@ export interface RegisterRequest {
   name: string;
   email: string;
   cpf: string;
-  password: string;
-  favoriteSweets?: string;
+  plainPassword: string;
+  favorite_sweets: string[];
 }
 
-export interface AuthResponse {
+export interface LoginResponse {
   token: string;
-  user: User;
+  expiresIn: number;
 }
 
 export interface ApiError {

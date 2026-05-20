@@ -30,7 +30,7 @@ describe("auth lib", () => {
   });
 
   it("stores and retrieves user", () => {
-    const user = { id: 1, name: "John", email: "john@test.com", cpf: "123" };
+    const user = { name: "John", favorite_sweets: ["Brigadeiro"] };
     setStoredUser(user);
     expect(getStoredUser()).toEqual(user);
   });

@@ -12,8 +12,8 @@ vi.mock("@/lib/api", () => ({
 }));
 
 const mockSessions: VotingSession[] = [
-  { id: 1, year: 2024, isOpenToVote: true, isOpenToSubscribe: false },
-  { id: 2, year: 2025, isOpenToVote: false, isOpenToSubscribe: true },
+  { id: "1", name: "Christmas 2024", isOpenToVote: true, numberOfParticipants: 0, subscribedDesserts: [], closingDate: "2024-12-25T23:59:59" },
+  { id: "2", name: "Christmas 2025", isOpenToVote: false, numberOfParticipants: 0, subscribedDesserts: [], closingDate: "2025-12-25T23:59:59" },
 ];
 
 describe("useVoting", () => {
@@ -63,10 +63,12 @@ describe("useVoting", () => {
 
   it("creates a session and returns it", async () => {
     const newSession: VotingSession = {
-      id: 3,
-      year: 2026,
+      id: "3",
+      name: "Christmas 2026",
       isOpenToVote: false,
-      isOpenToSubscribe: true,
+      numberOfParticipants: 0,
+      subscribedDesserts: [],
+      closingDate: "2026-12-25T23:59:59",
     };
     vi.mocked(api.post).mockResolvedValue({ data: newSession });
 
@@ -74,11 +76,19 @@ describe("useVoting", () => {
 
     let created: VotingSession | undefined;
     await act(async () => {
-      created = await result.current.createSession({ year: 2026 });
+      created = await result.current.createSession({
+        name: "Christmas 2026",
+        description: "Best desserts",
+        closingDate: "25/12/2026 23:59:59",
+      });
     });
 
     expect(created).toEqual(newSession);
-    expect(api.post).toHaveBeenCalledWith("/voting", { year: 2026 });
+    expect(api.post).toHaveBeenCalledWith("/voting", {
+      name: "Christmas 2026",
+      description: "Best desserts",
+      closingDate: "25/12/2026 23:59:59",
+    });
   });
 
   it("subscribes a dessert", async () => {
@@ -87,11 +97,12 @@ describe("useVoting", () => {
     const { result } = renderHook(() => useVoting());
 
     await act(async () => {
-      await result.current.subscribeDessert(1, 42);
+      await result.current.subscribeDessert("1", "42", "Brigadeiro");
     });
 
     expect(api.patch).toHaveBeenCalledWith("/voting/1/subscribe", {
-      dessertId: 42,
+      dessertId: { id: "42" },
+      name: "Brigadeiro",
     });
   });
 
@@ -101,21 +112,22 @@ describe("useVoting", () => {
     const { result } = renderHook(() => useVoting());
 
     await act(async () => {
-      await result.current.castVote(1, 42);
+      await result.current.castVote("1", "42");
     });
 
     expect(api.post).toHaveBeenCalledWith("/voting/1/vote", {
-      dessertId: 42,
+      dessertId: { id: "42" },
     });
   });
 
   it("fetches session details", async () => {
     const details = {
-      id: 1,
-      year: 2024,
+      id: "1",
+      name: "Christmas 2024",
       isOpenToVote: true,
-      isOpenToSubscribe: false,
-      desserts: [],
+      numberOfParticipants: 0,
+      subscribedDesserts: [],
+      closingDate: "2024-12-25T23:59:59",
     };
     vi.mocked(api.get).mockResolvedValue({ data: details });
 
@@ -123,7 +135,7 @@ describe("useVoting", () => {
 
     let sessionDetails;
     await act(async () => {
-      sessionDetails = await result.current.fetchSessionDetails(1);
+      sessionDetails = await result.current.fetchSessionDetails("1");
     });
 
     expect(sessionDetails).toEqual(details);
@@ -132,8 +144,8 @@ describe("useVoting", () => {
 
   it("fetches results", async () => {
     const results = [
-      { dessertId: 1, dessertName: "Pudim", votes: 5 },
-      { dessertId: 2, dessertName: "Bolo", votes: 3 },
+      { dessertId: "1", dessertName: "Pudim", votes: 5 },
+      { dessertId: "2", dessertName: "Bolo", votes: 3 },
     ];
     vi.mocked(api.get).mockResolvedValue({ data: results });
 
@@ -141,7 +153,7 @@ describe("useVoting", () => {
 
     let voteResults;
     await act(async () => {
-      voteResults = await result.current.fetchResults(1);
+      voteResults = await result.current.fetchResults("1");
     });
 
     expect(voteResults).toEqual(results);

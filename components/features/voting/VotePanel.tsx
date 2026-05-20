@@ -1,13 +1,17 @@
 "use client";
 
-import type { DessertInSession } from "@/types/voting";
 import { Card, Button } from "@/components/ui";
 
+interface SubscribedItem {
+  id: string;
+  name: string;
+}
+
 interface VotePanelProps {
-  subscribed: DessertInSession[];
+  subscribed: SubscribedItem[];
   loading: boolean;
   sessionOpen: boolean;
-  onVote: (dessertId: number) => Promise<void>;
+  onVote: (dessertId: string) => Promise<void>;
 }
 
 export function VotePanel({
@@ -56,11 +60,6 @@ export function VotePanel({
         {subscribed.map((dessert) => (
           <Card key={dessert.id}>
             <h3 className="font-semibold text-zinc-900">{dessert.name}</h3>
-            {dessert.description && (
-              <p className="mt-1 text-sm text-zinc-500">
-                {dessert.description}
-              </p>
-            )}
             <div className="mt-3">
               <Button size="sm" onClick={() => onVote(dessert.id)}>
                 Vote

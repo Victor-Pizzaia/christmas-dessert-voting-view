@@ -4,8 +4,8 @@ import { SessionList } from "./SessionList";
 import type { VotingSession } from "@/types/voting";
 
 const mockSessions: VotingSession[] = [
-  { id: 1, year: 2024, isOpenToVote: true, isOpenToSubscribe: false },
-  { id: 2, year: 2025, isOpenToVote: false, isOpenToSubscribe: true },
+  { id: "1", name: "Christmas 2024", isOpenToVote: true, numberOfParticipants: 0, subscribedDesserts: [], closingDate: "2024-12-25T23:59:59" },
+  { id: "2", name: "Christmas 2025", isOpenToVote: false, numberOfParticipants: 0, subscribedDesserts: [], closingDate: "2025-12-25T23:59:59" },
 ];
 
 describe("SessionList", () => {
@@ -37,22 +37,6 @@ describe("SessionList", () => {
     expect(screen.getByText("Christmas 2025")).toBeInTheDocument();
     expect(screen.getByText("Voting open")).toBeInTheDocument();
     expect(screen.getByText("Subscriptions open")).toBeInTheDocument();
-  });
-
-  it("renders closed badge when neither is open", () => {
-    const closedSessions: VotingSession[] = [
-      { id: 3, year: 2023, isOpenToVote: false, isOpenToSubscribe: false },
-    ];
-    render(
-      <SessionList
-        sessions={closedSessions}
-        loading={false}
-        error={null}
-        isEmpty={false}
-        onRetry={vi.fn()}
-      />
-    );
-    expect(screen.getByText("Closed")).toBeInTheDocument();
   });
 
   it("renders empty state when isEmpty", () => {

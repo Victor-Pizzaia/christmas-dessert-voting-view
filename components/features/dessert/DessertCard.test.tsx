@@ -4,10 +4,9 @@ import { DessertCard } from "./DessertCard";
 import type { Dessert } from "@/types/dessert";
 
 const baseDessert: Dessert = {
-  id: 1,
+  id: "1",
   name: "Pudim",
   description: "Delicious",
-  owner: { id: 1, name: "John" },
 };
 
 describe("DessertCard", () => {
@@ -17,24 +16,14 @@ describe("DessertCard", () => {
     expect(screen.getByText("Delicious")).toBeInTheDocument();
   });
 
-  it("renders owner info", () => {
-    render(<DessertCard dessert={baseDessert} onDelete={vi.fn()} />);
-    expect(screen.getByText(/owner:/i)).toHaveTextContent("John");
-  });
-
-  it("shows subscribed badge when subscribed", () => {
+  it("renders recipe info", () => {
     render(
       <DessertCard
-        dessert={{ ...baseDessert, subscribed: true }}
+        dessert={{ ...baseDessert, recipe: "Mix and bake" }}
         onDelete={vi.fn()}
       />
     );
-    expect(screen.getByText("Subscribed")).toBeInTheDocument();
-  });
-
-  it("does not show subscribed badge when not subscribed", () => {
-    render(<DessertCard dessert={baseDessert} onDelete={vi.fn()} />);
-    expect(screen.queryByText("Subscribed")).not.toBeInTheDocument();
+    expect(screen.getByText(/recipe:/i)).toHaveTextContent("Mix and bake");
   });
 
   it("calls onDelete when delete button is clicked", async () => {
@@ -48,7 +37,7 @@ describe("DessertCard", () => {
   it("does not render description when not provided", () => {
     render(
       <DessertCard
-        dessert={{ id: 1, name: "Bolo" }}
+        dessert={{ id: "2", name: "Bolo" }}
         onDelete={vi.fn()}
       />
     );

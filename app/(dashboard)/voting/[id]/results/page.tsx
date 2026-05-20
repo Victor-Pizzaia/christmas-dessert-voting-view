@@ -10,10 +10,10 @@ import { api } from "@/lib/api";
 
 export default function ResultsPage() {
   const params = useParams();
-  const sessionId = Number(params.id);
+  const sessionId = params.id as string;
 
   const [results, setResults] = useState<VoteResult[]>([]);
-  const [session, setSession] = useState<{ year: number } | null>(null);
+  const [session, setSession] = useState<{ name: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +46,7 @@ export default function ResultsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">
-            Results{session ? ` — Christmas ${session.year}` : ""}
+            Results{session ? ` — ${session.name}` : ""}
           </h1>
         </div>
         <Link href={`/voting/${sessionId}`}>

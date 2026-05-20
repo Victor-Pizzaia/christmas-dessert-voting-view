@@ -4,9 +4,9 @@ import { ResultsPanel } from "./ResultsPanel";
 import type { VoteResult } from "@/types/voting";
 
 const results: VoteResult[] = [
-  { dessertId: 1, dessertName: "Pudim", votes: 5 },
-  { dessertId: 2, dessertName: "Bolo", votes: 3 },
-  { dessertId: 3, dessertName: "Mousse", votes: 1 },
+  { dessertId: "1", dessertName: "Pudim", votes: 5 },
+  { dessertId: "2", dessertName: "Bolo", votes: 3 },
+  { dessertId: "3", dessertName: "Mousse", votes: 1 },
 ];
 
 describe("ResultsPanel", () => {
@@ -104,7 +104,7 @@ describe("ResultsPanel", () => {
   it("handles single result with singular vote text", () => {
     render(
       <ResultsPanel
-        results={[{ dessertId: 1, dessertName: "Pudim", votes: 1 }]}
+        results={[{ dessertId: "1", dessertName: "Pudim", votes: 1 }]}
         loading={false}
         error={null}
         isEmpty={false}
