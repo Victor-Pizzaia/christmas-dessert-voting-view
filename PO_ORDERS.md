@@ -36,6 +36,16 @@ Padrão: `<issue-number>-<kebab-case-title>`
 
 ---
 
+## ⚠️ CORREÇÃO PENDENTE — Login request field
+
+O backend espera `identifier` (email ou cpf), não `email`. Corrija o login request no frontend para enviar:
+
+```json
+{ "identifier": "email@ou-cpf", "password": "..." }
+```
+
+O Swagger está sendo implementado no backend (#53) e vai documentar todos os contratos oficialmente.
+
 ## 🎯 Tarefa Atual
 
 **Issue:** #41 — Create Voting pages (session management, subscribe desserts, cast votes, results)
