@@ -9,6 +9,7 @@
 3. `npm test` (ou vitest) ✅
 4. `npm run build` ✅ — **o build precisa passar sem erros**
 5. Rodar `npm run dev` e validar que a página abre em `http://localhost:3000`
+6. **Parar o dev server após validar (Ctrl+C)**
 
 **Se o build falhar ou a página não abrir, VOCÊ NÃO ABRE PR.** Corrija primeiro.
 
