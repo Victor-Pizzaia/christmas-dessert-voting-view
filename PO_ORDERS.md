@@ -6,17 +6,17 @@
 
 1. `npm run lint` ✅
 2. `npm run typecheck` ✅
-3. `npm test` (ou vitest) ✅
-4. `npm run build` ✅ — **o build precisa passar sem erros**
+3. `npm test` ✅
+4. `npm run build` ✅
 5. Rodar `npm run dev` e validar que a página abre em `http://localhost:3000`
 6. **Parar o dev server após validar (Ctrl+C)**
 
-**Se o build falhar ou a página não abrir, VOCÊ NÃO ABRE PR.** Corrija primeiro.
+**Se o build falhar, NÃO ABRE PR.**
 
 ## Demais regras
 
-### 0. REGRA ABSOLUTA — NUNCA fazer push direto para master
-Master é **read-only**. Toda alteração DEVE passar por branch + PR. Qualquer push direto será rejeitado.
+### 0. NUNCA fazer push direto para master
+Master é **read-only**. Toda alteração DEVE passar por branch + PR.
 
 ### 1. Sempre criar branch
 Padrão: `<issue-number>-<kebab-case-title>`
@@ -25,53 +25,63 @@ Padrão: `<issue-number>-<kebab-case-title>`
 `<emoji> <tipo>: <descrição>`
 
 ### 3. PR obrigatório
-- Abrir PR para `master`
-- Corpo com `Closes #<issue>`
-- Build validado (regra crítica acima)
+- Abrir PR para `master` com `Closes #<issue>`
+- Build validado
 
 ### 4. Reportar ao PO
-- Ao iniciar task → mover card no board para **In Progress**
+- Ao iniciar task → mover card para **In Progress**
 - Ao abrir PR → mover card para **In Review**
 - Terminar → esperar novas ordens
 
 ---
 
-## ⚠️ CORREÇÃO PENDENTE — Login request field
-
-O backend espera `identifier` (email ou cpf), não `email`. Corrija o login request no frontend para enviar:
-
-```json
-{ "identifier": "email@ou-cpf", "password": "..." }
-```
-
-O Swagger está sendo implementado no backend (#53) e vai documentar todos os contratos oficialmente.
+## ✅ Login corrigido
+PR #29 já corrigiu `email` → `identifier`. Swagger agora disponível.
 
 ## 🎯 Tarefa Atual
 
-**Issue:** #41 — Create Voting pages (session management, subscribe desserts, cast votes, results)
+**Tarefa:** Revisar Swagger e corrigir contratos da API no frontend
 **Prioridade:** P1
-**Size:** L
-**Branch:** `41-voting-pages`
-**Link:** https://github.com/Victor-Pizzaia/christmas-dessert-voting/issues/41
+**Size:** M
+**Branch:** `fix-api-contracts-swagger`
 
 ### Instruções
-1. Voting session list page — `GET /api/v1/voting`
-2. Create voting session form — `POST /api/v1/voting`
-3. Subscribe desserts to session — `PATCH /api/v1/voting/{id}/subscribe`
-4. Vote page — `POST /api/v1/voting/{id}/vote` (#55 em andamento no backend)
-5. Results page — `GET /api/v1/voting/{id}/results` (#56 em andamento no backend)
-6. Loading, empty, error states
-7. Responsive layout
-8. Unit tests
 
-### Endpoints
-| Ação | Path | Método | Status |
-|------|------|:------:|:------:|
-| Listar sessões | `/api/v1/voting` | GET | ✅ Pronto |
-| Criar sessão | `/api/v1/voting` | POST | ✅ Pronto |
-| Inscrever | `/api/v1/voting/{id}/subscribe` | PATCH | ✅ Pronto |
-| Votar | `/api/v1/voting/{id}/vote` | POST | 🚧 #55 |
-| Resultados | `/api/v1/voting/{id}/results` | GET | 🚧 #56 |
+1. **Suba o backend** para acessar o Swagger:
+   ```bash
+   cd /home/pizzaia/dev/spring/christmas-dessert-voting
+   docker build -t christmas-dessert-voting .
+   docker-compose up -d
+   ```
+   Swagger: http://localhost:8080/api/v1/swagger-ui.html
+
+2. **Para cada endpoint**, compare o contrato do Swagger com o que o frontend está chamando:
+
+   | Endpoint | Swagger body/params | Frontend atual |
+   |----------|-------------------|----------------|
+   | `POST /users` | { name, cpf, email, password, favoriteSweets[] } | Confira se confere |
+   | `POST /users/login` | { identifier, password } | ✅ já corrigido |
+   | `GET /desserts` | Response: DessertDTO[] | Confira os campos |
+   | `POST /desserts` | { name, description?, recipe? } | Confira |
+   | `DELETE /desserts/{id}` | Path: id (UUID) | Confira |
+   | `POST /voting` | { name, description?, closingDate? } | Confira |
+   | `PATCH /voting/{id}/subscribe` | { dessertId } | Confira |
+   | `POST /voting/{id}/vote` | { dessertId } | Confira |
+   | `GET /voting/{id}/results` | Response: resultados ordenados | Confira |
+
+3. **Corrija** no frontend:
+   - Nomes de campos diferentes
+   - Tipos errados
+   - Paths incorretos
+   - Headers faltando
+
+4. **Atualize** `types/` para espelhar os DTOs do backend
+
+5. **Valide**: lint → typecheck → test → build
+
+6. **Desligue** backend: `docker-compose down`
+
+7. **PR** reportando cada correção feita
 
 ---
 
