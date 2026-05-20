@@ -15,7 +15,7 @@ interface AuthContextData {
   user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, cpf: string, password: string) => Promise<void>;
+  register: (name: string, email: string, cpf: string, password: string, favoriteSweets?: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -41,12 +41,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const register = useCallback(
-    async (name: string, email: string, cpf: string, password: string) => {
+    async (name: string, email: string, cpf: string, password: string, favoriteSweets?: string) => {
       const response = await api.post("/users", {
         name,
         email,
         cpf,
         password,
+        favoriteSweets,
       });
       const { token, user: userData } = response.data;
       setToken(token);

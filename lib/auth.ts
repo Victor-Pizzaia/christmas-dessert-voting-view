@@ -1,5 +1,9 @@
+import type { User } from "@/types/auth";
+
 const TOKEN_KEY = "@christmas:token";
 const USER_KEY = "@christmas:user";
+
+export type { User };
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -13,13 +17,6 @@ export function setToken(token: string): void {
 export function removeToken(): void {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
-}
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  cpf: string;
 }
 
 export function getStoredUser(): User | null {
