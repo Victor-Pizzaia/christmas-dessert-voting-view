@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { Button, Input } from "@/components/ui";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,43 +36,27 @@ export default function LoginPage() {
           <p className="rounded bg-red-50 p-3 text-sm text-red-600">{error}</p>
         )}
 
-        <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium text-zinc-700">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-          />
-        </div>
+        <Input
+          id="email"
+          label="Email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-        <div className="space-y-2">
-          <label
-            htmlFor="password"
-            className="text-sm font-medium text-zinc-700"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-          />
-        </div>
+        <Input
+          id="password"
+          label="Password"
+          type="password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <button
-          type="submit"
-          className="w-full rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
-        >
+        <Button type="submit" className="w-full">
           Sign in
-        </button>
+        </Button>
 
         <p className="text-center text-sm text-zinc-500">
           Don&apos;t have an account?{" "}
