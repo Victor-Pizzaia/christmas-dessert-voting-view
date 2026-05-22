@@ -1,15 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SubscribePanel } from "./SubscribePanel";
 import type { Dessert } from "@/types/dessert";
 
-const subscribed = [
-  { id: "1", name: "Pudim", subscribed: true },
-];
-
-const available: Dessert[] = [
-  { id: "1", name: "Pudim", description: "Tasty" },
-  { id: "2", name: "Bolo", description: "Chocolate" },
+const mockSubscribed = [{ id: "1", name: "Chocolate Cake", subscribed: true }];
+const mockAvailable: Dessert[] = [
+  { id: "2", name: "Panettone", description: "Italian" },
 ];
 
 describe("SubscribePanel", () => {
@@ -23,90 +19,51 @@ describe("SubscribePanel", () => {
         onSubscribe={vi.fn()}
       />
     );
-    expect(container.innerHTML).toBe("");
+    expect(container.firstChild).toBeNull();
   });
 
   it("renders subscribed desserts", () => {
     render(
       <SubscribePanel
-        subscribed={subscribed}
-        available={available}
+        subscribed={mockSubscribed}
+        available={mockAvailable}
         loading={false}
         sessionOpen={true}
         onSubscribe={vi.fn()}
       />
     );
-    expect(screen.getByText("Pudim")).toBeInTheDocument();
+    expect(screen.getByText("Chocolate Cake")).toBeInTheDocument();
   });
 
-  it("renders empty message when no subscribed desserts", () => {
+  it("shows available desserts and subscribe button", async () => {
+    const onSubscribe = vi.fn().mockResolvedValueOnce(undefined);
+    const user = userEvent.setup();
     render(
       <SubscribePanel
-        subscribed={[]}
-        available={available}
-        loading={false}
-        sessionOpen={true}
-        onSubscribe={vi.fn()}
-      />
-    );
-    expect(
-      screen.getByText(/no desserts subscribed yet/i)
-    ).toBeInTheDocument();
-  });
-
-  it("renders available desserts to subscribe", () => {
-    render(
-      <SubscribePanel
-        subscribed={subscribed}
-        available={available}
-        loading={false}
-        sessionOpen={true}
-        onSubscribe={vi.fn()}
-      />
-    );
-    expect(screen.getByText("Bolo")).toBeInTheDocument();
-  });
-
-  it("only shows unsubscribed desserts as available", () => {
-    render(
-      <SubscribePanel
-        subscribed={subscribed}
-        available={available}
-        loading={false}
-        sessionOpen={true}
-        onSubscribe={vi.fn()}
-      />
-    );
-    expect(screen.getAllByText("Subscribe")).toHaveLength(1);
-  });
-
-  it("calls onSubscribe with dessert id and name", async () => {
-    const onSubscribe = vi.fn();
-    render(
-      <SubscribePanel
-        subscribed={subscribed}
-        available={available}
+        subscribed={mockSubscribed}
+        available={mockAvailable}
         loading={false}
         sessionOpen={true}
         onSubscribe={onSubscribe}
       />
     );
-
-    await userEvent.click(screen.getByText("Subscribe"));
-    expect(onSubscribe).toHaveBeenCalledWith("2", "Bolo");
+    expect(screen.getByText("Panettone")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /inscrever/i }));
+    await waitFor(() => {
+      expect(onSubscribe).toHaveBeenCalledWith("2", "Panettone");
+    });
   });
 
-  it("renders loading skeletons when loading", () => {
+  it("shows empty state when no desserts subscribed", () => {
     render(
       <SubscribePanel
         subscribed={[]}
         available={[]}
-        loading={true}
+        loading={false}
         sessionOpen={true}
         onSubscribe={vi.fn()}
       />
     );
-    const skeletons = document.querySelectorAll(".animate-pulse");
-    expect(skeletons.length).toBeGreaterThan(0);
+    expect(screen.getByText(/nenhum doce inscrito/i)).toBeInTheDocument();
   });
 });

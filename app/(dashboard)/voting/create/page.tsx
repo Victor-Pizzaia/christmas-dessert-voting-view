@@ -15,8 +15,8 @@ export default function CreateVotingSessionPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-zinc-900">
-        Create Voting Session
+      <h1 className="text-2xl font-bold text-dark-choc">
+        Criar Nova Votação
       </h1>
       <div className="max-w-md">
         <CreateSessionForm onSubmit={handleCreate} />

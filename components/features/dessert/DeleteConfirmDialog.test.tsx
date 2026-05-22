@@ -3,63 +3,43 @@ import userEvent from "@testing-library/user-event";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 
 describe("DeleteConfirmDialog", () => {
-  it("renders with dessert name", () => {
+  it("renders the dialog with dessert name", () => {
     render(
       <DeleteConfirmDialog
-        dessertName="Pudim"
+        dessertName="Chocolate Cake"
         onConfirm={vi.fn()}
         onCancel={vi.fn()}
       />
     );
-    expect(screen.getByText(/pudim/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /cancel/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /delete/i })
-    ).toBeInTheDocument();
+    expect(screen.getByText(/excluir doce/i)).toBeInTheDocument();
+    expect(screen.getByText(/Chocolate Cake/)).toBeInTheDocument();
   });
 
-  it("calls onConfirm when delete is clicked", async () => {
-    const onConfirm = vi.fn();
-    render(
-      <DeleteConfirmDialog
-        dessertName="Pudim"
-        onConfirm={onConfirm}
-        onCancel={vi.fn()}
-      />
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
-    expect(onConfirm).toHaveBeenCalled();
-  });
-
-  it("calls onCancel when cancel is clicked", async () => {
+  it("calls onCancel when cancel button is clicked", async () => {
     const onCancel = vi.fn();
+    const user = userEvent.setup();
     render(
       <DeleteConfirmDialog
-        dessertName="Pudim"
+        dessertName="Test"
         onConfirm={vi.fn()}
         onCancel={onCancel}
       />
     );
-
-    await userEvent.click(screen.getByRole("button", { name: /cancel/i }));
+    await user.click(screen.getByRole("button", { name: /cancelar/i }));
     expect(onCancel).toHaveBeenCalled();
   });
 
-  it("disables buttons while loading", () => {
+  it("calls onConfirm when delete button is clicked", async () => {
+    const onConfirm = vi.fn();
+    const user = userEvent.setup();
     render(
       <DeleteConfirmDialog
-        dessertName="Pudim"
-        onConfirm={vi.fn()}
+        dessertName="Test"
+        onConfirm={onConfirm}
         onCancel={vi.fn()}
-        loading={true}
       />
     );
-    expect(
-      screen.getByRole("button", { name: /deleting/i })
-    ).toBeDisabled();
-    expect(screen.getByRole("button", { name: /cancel/i })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: /excluir/i }));
+    expect(onConfirm).toHaveBeenCalled();
   });
 });

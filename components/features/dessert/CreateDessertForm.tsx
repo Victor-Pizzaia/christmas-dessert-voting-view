@@ -29,16 +29,16 @@ export function CreateDessertForm({ onSubmit }: CreateDessertFormProps) {
   return (
     <Card>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <h2 className="text-lg font-semibold text-zinc-800">
-          Add new dessert
+        <h2 className="text-lg font-bold text-dark-choc">
+          Adicionar novo doce
         </h2>
 
         <div className="space-y-2">
           <label
             htmlFor="dessert-name"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-dark-choc"
           >
-            Name
+            Nome
           </label>
           <input
             id="dessert-name"
@@ -46,30 +46,30 @@ export function CreateDessertForm({ onSubmit }: CreateDessertFormProps) {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Chocolate Cake"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            placeholder="Ex: Bolo de Chocolate"
+            className="w-full rounded-lg border border-sage/50 bg-white px-3 py-2 text-sm text-dark-choc placeholder:text-milk-choc/50 focus:border-strawberry focus:outline-none focus:ring-1 focus:ring-strawberry"
           />
         </div>
 
         <div className="space-y-2">
           <label
             htmlFor="dessert-description"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-dark-choc"
           >
-            Description
+            Descrição
           </label>
           <textarea
             id="dessert-description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Optional description..."
+            placeholder="Descrição opcional..."
             rows={3}
-            className="w-full resize-none rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            className="w-full resize-none rounded-lg border border-sage/50 bg-white px-3 py-2 text-sm text-dark-choc placeholder:text-milk-choc/50 focus:border-strawberry focus:outline-none focus:ring-1 focus:ring-strawberry"
           />
         </div>
 
         <Button type="submit" disabled={submitting}>
-          {submitting ? "Creating..." : "Create"}
+          {submitting ? "Criando..." : "Criar Doce"}
         </Button>
       </form>
     </Card>

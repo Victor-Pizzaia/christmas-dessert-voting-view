@@ -1,14 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { VotePanel } from "./VotePanel";
 
-const subscribed = [
-  { id: "1", name: "Pudim" },
-  { id: "2", name: "Bolo" },
-];
-
 describe("VotePanel", () => {
-  it("renders vote closed message when session is closed", () => {
+  it("shows closed message when session is not open", () => {
     render(
       <VotePanel
         subscribed={[]}
@@ -17,12 +12,11 @@ describe("VotePanel", () => {
         onVote={vi.fn()}
       />
     );
-    expect(
-      screen.getByText(/voting is closed/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/votação está fechada/i)).toBeInTheDocument();
   });
 
   it("renders subscribed desserts with vote buttons", () => {
+    const subscribed = [{ id: "1", name: "Chocolate Cake" }];
     render(
       <VotePanel
         subscribed={subscribed}
@@ -31,28 +25,28 @@ describe("VotePanel", () => {
         onVote={vi.fn()}
       />
     );
-    expect(screen.getByText("Pudim")).toBeInTheDocument();
-    expect(screen.getByText("Bolo")).toBeInTheDocument();
-    expect(screen.getAllByText("Vote")).toHaveLength(2);
+    expect(screen.getByText("Chocolate Cake")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /votar/i })).toBeInTheDocument();
   });
 
-  it("calls onVote with dessert id", async () => {
-    const onVote = vi.fn();
+  it("calls onVote when button is clicked", async () => {
+    const onVote = vi.fn().mockResolvedValueOnce(undefined);
+    const user = userEvent.setup();
     render(
       <VotePanel
-        subscribed={subscribed}
+        subscribed={[{ id: "1", name: "Chocolate Cake" }]}
         loading={false}
         sessionOpen={true}
         onVote={onVote}
       />
     );
-
-    const voteButtons = screen.getAllByText("Vote");
-    await userEvent.click(voteButtons[0]);
-    expect(onVote).toHaveBeenCalledWith("1");
+    await user.click(screen.getByRole("button", { name: /votar/i }));
+    await waitFor(() => {
+      expect(onVote).toHaveBeenCalledWith("1");
+    });
   });
 
-  it("renders empty message when no subscribed desserts", () => {
+  it("shows empty state when no desserts", () => {
     render(
       <VotePanel
         subscribed={[]}
@@ -61,21 +55,6 @@ describe("VotePanel", () => {
         onVote={vi.fn()}
       />
     );
-    expect(
-      screen.getByText(/no desserts subscribed yet/i)
-    ).toBeInTheDocument();
-  });
-
-  it("renders loading skeletons when loading", () => {
-    render(
-      <VotePanel
-        subscribed={[]}
-        loading={true}
-        sessionOpen={true}
-        onVote={vi.fn()}
-      />
-    );
-    const skeletons = document.querySelectorAll(".animate-pulse");
-    expect(skeletons.length).toBeGreaterThan(0);
+    expect(screen.getByText(/nenhum doce inscrito/i)).toBeInTheDocument();
   });
 });

@@ -23,7 +23,7 @@ export function VotePanel({
   if (!sessionOpen) {
     return (
       <Card className="text-center">
-        <p className="text-zinc-500">Voting is closed for this session.</p>
+        <p className="text-milk-choc">A votação está fechada para esta sessão.</p>
       </Card>
     );
   }
@@ -33,8 +33,8 @@ export function VotePanel({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
           <Card key={i}>
-            <div className="h-4 w-3/4 animate-pulse rounded bg-zinc-200" />
-            <div className="mt-3 h-8 w-16 animate-pulse rounded bg-zinc-200" />
+            <div className="h-4 w-3/4 animate-pulse rounded bg-rose" />
+            <div className="mt-3 h-8 w-16 animate-pulse rounded bg-rose" />
           </Card>
         ))}
       </div>
@@ -44,8 +44,8 @@ export function VotePanel({
   if (subscribed.length === 0) {
     return (
       <Card className="text-center">
-        <p className="text-zinc-500">
-          No desserts subscribed yet. Wait for subscriptions to open.
+        <p className="text-milk-choc">
+          Nenhum doce inscrito ainda. Aguarde a fase de inscrições.
         </p>
       </Card>
     );
@@ -53,16 +53,16 @@ export function VotePanel({
 
   return (
     <section className="space-y-4">
-      <h2 className="text-lg font-semibold text-zinc-800">
-        Cast Your Vote
+      <h2 className="text-lg font-bold text-dark-choc">
+        Vote no seu favorito
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {subscribed.map((dessert) => (
           <Card key={dessert.id}>
-            <h3 className="font-semibold text-zinc-900">{dessert.name}</h3>
+            <h3 className="font-semibold text-dark-choc">{dessert.name}</h3>
             <div className="mt-3">
               <Button size="sm" onClick={() => onVote(dessert.id)}>
-                Vote
+                Votar
               </Button>
             </div>
           </Card>

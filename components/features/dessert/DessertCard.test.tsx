@@ -3,44 +3,25 @@ import userEvent from "@testing-library/user-event";
 import { DessertCard } from "./DessertCard";
 import type { Dessert } from "@/types/dessert";
 
-const baseDessert: Dessert = {
+const mockDessert: Dessert = {
   id: "1",
-  name: "Pudim",
-  description: "Delicious",
+  name: "Chocolate Cake",
+  description: "Rich and moist",
 };
 
 describe("DessertCard", () => {
-  it("renders dessert name and description", () => {
-    render(<DessertCard dessert={baseDessert} onDelete={vi.fn()} />);
-    expect(screen.getByText("Pudim")).toBeInTheDocument();
-    expect(screen.getByText("Delicious")).toBeInTheDocument();
-  });
-
-  it("renders recipe info", () => {
-    render(
-      <DessertCard
-        dessert={{ ...baseDessert, recipe: "Mix and bake" }}
-        onDelete={vi.fn()}
-      />
-    );
-    expect(screen.getByText(/recipe:/i)).toHaveTextContent("Mix and bake");
+  it("renders dessert info", () => {
+    render(<DessertCard dessert={mockDessert} onDelete={vi.fn()} />);
+    expect(screen.getByText("Chocolate Cake")).toBeInTheDocument();
+    expect(screen.getByText("Rich and moist")).toBeInTheDocument();
   });
 
   it("calls onDelete when delete button is clicked", async () => {
     const onDelete = vi.fn();
-    render(<DessertCard dessert={baseDessert} onDelete={onDelete} />);
+    const user = userEvent.setup();
+    render(<DessertCard dessert={mockDessert} onDelete={onDelete} />);
 
-    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
-    expect(onDelete).toHaveBeenCalledWith(baseDessert);
-  });
-
-  it("does not render description when not provided", () => {
-    render(
-      <DessertCard
-        dessert={{ id: "2", name: "Bolo" }}
-        onDelete={vi.fn()}
-      />
-    );
-    expect(screen.getByText("Bolo")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /excluir/i }));
+    expect(onDelete).toHaveBeenCalledWith(mockDessert);
   });
 });

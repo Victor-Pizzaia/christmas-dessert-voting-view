@@ -21,13 +21,13 @@ export default function LoginPage() {
     const value = email.trim();
 
     if (!value) {
-      newErrors.email = "Email or CPF is required";
+      newErrors.email = "Email ou CPF é obrigatório";
     } else if (!isEmail(value) && !isCPF(value)) {
-      newErrors.email = "Enter a valid email or CPF";
+      newErrors.email = "Digite um email ou CPF válido";
     }
 
     if (!password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Senha é obrigatória";
     }
 
     setErrors(newErrors);
@@ -48,10 +48,10 @@ export default function LoginPage() {
       if (err && typeof err === "object" && "response" in err) {
         const axiosErr = err as { response?: { data?: { message?: string } } };
         setApiError(
-          axiosErr.response?.data?.message || "Invalid email/CPF or password"
+          axiosErr.response?.data?.message || "Email/CPF ou senha inválidos"
         );
       } else {
-        setApiError("An unexpected error occurred. Please try again.");
+        setApiError("Ocorreu um erro inesperado. Tente novamente.");
       }
     } finally {
       setLoading(false);
@@ -69,16 +69,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4">
+    <div className="flex items-start justify-center pt-12 px-4">
       <form
         onSubmit={handleSubmit}
         noValidate
-        className="w-full max-w-sm space-y-6 rounded-lg bg-white p-8 shadow-sm"
+        className="w-full max-w-sm space-y-6 rounded-2xl bg-rose/60 p-8 shadow-sm border border-rose"
       >
-        <h1 className="text-2xl font-bold text-zinc-900">Login</h1>
+        <h1 className="text-2xl font-bold text-dark-choc text-center">
+          Entrar
+        </h1>
 
         {apiError && (
-          <p className="rounded bg-red-50 p-3 text-sm text-red-600">
+          <p className="rounded bg-cherry/10 p-3 text-sm text-cherry">
             {apiError}
           </p>
         )}
@@ -86,22 +88,22 @@ export default function LoginPage() {
         <div className="space-y-2">
           <Input
             id="email"
-            label="Email or CPF"
+            label="Email ou CPF"
             type="text"
             required
             value={email}
             onChange={(e) => handleEmailChange(e.target.value)}
-            placeholder="email@example.com or 000.000.000-00"
+            placeholder="email@exemplo.com ou 000.000.000-00"
           />
           {errors.email && (
-            <p className="text-xs text-red-500">{errors.email}</p>
+            <p className="text-xs text-cherry">{errors.email}</p>
           )}
         </div>
 
         <div className="space-y-2">
           <Input
             id="password"
-            label="Password"
+            label="Senha"
             type="password"
             required
             value={password}
@@ -112,18 +114,18 @@ export default function LoginPage() {
             }}
           />
           {errors.password && (
-            <p className="text-xs text-red-500">{errors.password}</p>
+            <p className="text-xs text-cherry">{errors.password}</p>
           )}
         </div>
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Signing in..." : "Sign in"}
+          {loading ? "Entrando..." : "Entrar"}
         </Button>
 
-        <p className="text-center text-sm text-zinc-500">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-green-600 hover:underline">
-            Register
+        <p className="text-center text-sm text-milk-choc">
+          Não tem conta?{" "}
+          <Link href="/register" className="text-cherry hover:underline font-medium">
+            Cadastre-se
           </Link>
         </p>
       </form>

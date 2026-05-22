@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const publicPaths = ["/login", "/register"];
+const publicPaths = ["/login", "/register", "/"];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("@christmas:token")?.value;
 
   if (
     !token &&
-    !publicPaths.some((path) => request.nextUrl.pathname.startsWith(path))
+    !publicPaths.some((path) => request.nextUrl.pathname === path)
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }

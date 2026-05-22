@@ -17,14 +17,14 @@ export function DeleteConfirmDialog({
 }: DeleteConfirmDialogProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="mx-4 w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-        <h3 className="text-lg font-semibold text-zinc-900">
-          Delete dessert
+      <div className="mx-4 w-full max-w-sm rounded-2xl bg-vanilla p-6 shadow-xl border border-rose">
+        <h3 className="text-lg font-bold text-dark-choc">
+          Excluir doce
         </h3>
-        <p className="mt-2 text-sm text-zinc-600">
-          Are you sure you want to delete{" "}
-          <span className="font-medium text-zinc-900">{dessertName}</span>?
-          This action cannot be undone.
+        <p className="mt-2 text-sm text-milk-choc">
+          Tem certeza que deseja excluir{" "}
+          <span className="font-medium text-dark-choc">{dessertName}</span>?
+          Esta ação não pode ser desfeita.
         </p>
         <div className="mt-6 flex justify-end gap-3">
           <Button
@@ -32,14 +32,14 @@ export function DeleteConfirmDialog({
             onClick={onCancel}
             disabled={loading}
           >
-            Cancel
+            Cancelar
           </Button>
           <Button
             variant="danger"
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? "Deleting..." : "Delete"}
+            {loading ? "Excluindo..." : "Excluir"}
           </Button>
         </div>
       </div>

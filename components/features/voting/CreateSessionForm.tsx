@@ -31,16 +31,16 @@ export function CreateSessionForm({ onSubmit }: CreateSessionFormProps) {
   return (
     <Card>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <h2 className="text-lg font-semibold text-zinc-800">
-          New Voting Session
+        <h2 className="text-lg font-bold text-dark-choc">
+          Nova Votação
         </h2>
 
         <div className="space-y-2">
           <label
             htmlFor="session-name"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-dark-choc"
           >
-            Name
+            Nome
           </label>
           <input
             id="session-name"
@@ -48,34 +48,34 @@ export function CreateSessionForm({ onSubmit }: CreateSessionFormProps) {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Christmas Dessert Contest 2026"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            placeholder="Ex: Concurso de Panetone 2026"
+            className="w-full rounded-lg border border-sage/50 bg-white px-3 py-2 text-sm text-dark-choc placeholder:text-milk-choc/50 focus:border-strawberry focus:outline-none focus:ring-1 focus:ring-strawberry"
           />
         </div>
 
         <div className="space-y-2">
           <label
             htmlFor="session-description"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-dark-choc"
           >
-            Description
+            Descrição
           </label>
           <textarea
             id="session-description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Optional description..."
+            placeholder="Descrição opcional..."
             rows={3}
-            className="w-full resize-none rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            className="w-full resize-none rounded-lg border border-sage/50 bg-white px-3 py-2 text-sm text-dark-choc placeholder:text-milk-choc/50 focus:border-strawberry focus:outline-none focus:ring-1 focus:ring-strawberry"
           />
         </div>
 
         <div className="space-y-2">
           <label
             htmlFor="session-closing-date"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-dark-choc"
           >
-            Closing Date
+            Data de Encerramento
           </label>
           <input
             id="session-closing-date"
@@ -84,12 +84,12 @@ export function CreateSessionForm({ onSubmit }: CreateSessionFormProps) {
             value={closingDate}
             onChange={(e) => setClosingDate(e.target.value)}
             placeholder="dd/MM/yyyy HH:mm:ss"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            className="w-full rounded-lg border border-sage/50 bg-white px-3 py-2 text-sm text-dark-choc placeholder:text-milk-choc/50 focus:border-strawberry focus:outline-none focus:ring-1 focus:ring-strawberry"
           />
         </div>
 
         <Button type="submit" disabled={submitting}>
-          {submitting ? "Creating..." : "Create Session"}
+          {submitting ? "Criando..." : "Criar Votação"}
         </Button>
       </form>
     </Card>
