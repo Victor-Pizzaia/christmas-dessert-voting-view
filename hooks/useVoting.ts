@@ -34,7 +34,7 @@ export function useVoting() {
     return response.data;
   }, []);
 
-  const fetchSessionDetails = useCallback(async (sessionId: number) => {
+  const fetchSessionDetails = useCallback(async (sessionId: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -51,9 +51,10 @@ export function useVoting() {
   }, []);
 
   const subscribeDessert = useCallback(
-    async (sessionId: number, dessertId: number) => {
+    async (sessionId: string, dessertId: string, name: string) => {
       const response = await api.patch(`/voting/${sessionId}/subscribe`, {
-        dessertId,
+        dessertId: { id: dessertId },
+        name,
       });
       return response.data;
     },
@@ -61,16 +62,16 @@ export function useVoting() {
   );
 
   const castVote = useCallback(
-    async (sessionId: number, dessertId: number) => {
+    async (sessionId: string, dessertId: string) => {
       const response = await api.post(`/voting/${sessionId}/vote`, {
-        dessertId,
+        dessertId: { id: dessertId },
       });
       return response.data;
     },
     []
   );
 
-  const fetchResults = useCallback(async (sessionId: number) => {
+  const fetchResults = useCallback(async (sessionId: string) => {
     setLoading(true);
     setError(null);
     try {

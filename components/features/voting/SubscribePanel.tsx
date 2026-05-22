@@ -1,15 +1,20 @@
 "use client";
 
-import type { DessertInSession } from "@/types/voting";
 import type { Dessert } from "@/types/dessert";
 import { Card, Button } from "@/components/ui";
 
+interface SubscribedItem {
+  id: string;
+  name: string;
+  subscribed?: boolean;
+}
+
 interface SubscribePanelProps {
-  subscribed: DessertInSession[];
+  subscribed: SubscribedItem[];
   available: Dessert[];
   loading: boolean;
   sessionOpen: boolean;
-  onSubscribe: (dessertId: number) => Promise<void>;
+  onSubscribe: (dessertId: string, name: string) => Promise<void>;
 }
 
 export function SubscribePanel({
@@ -47,11 +52,6 @@ export function SubscribePanel({
           {subscribed.map((dessert) => (
             <Card key={dessert.id}>
               <h3 className="font-semibold text-zinc-900">{dessert.name}</h3>
-              {dessert.description && (
-                <p className="mt-1 text-sm text-zinc-500">
-                  {dessert.description}
-                </p>
-              )}
             </Card>
           ))}
         </div>
@@ -75,7 +75,7 @@ export function SubscribePanel({
                   <Button
                     variant="secondary"
                     size="sm"
-                    onClick={() => onSubscribe(dessert.id)}
+                    onClick={() => onSubscribe(dessert.id, dessert.name)}
                   >
                     Subscribe
                   </Button>

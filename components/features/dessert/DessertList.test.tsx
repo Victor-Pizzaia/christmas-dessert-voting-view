@@ -4,8 +4,8 @@ import { DessertList } from "./DessertList";
 import type { Dessert } from "@/types/dessert";
 
 const mockDesserts: Dessert[] = [
-  { id: 1, name: "Pudim", description: "Tasty" },
-  { id: 2, name: "Bolo", subscribed: true },
+  { id: "1", name: "Pudim", description: "Tasty" },
+  { id: "2", name: "Bolo" },
 ];
 
 describe("DessertList", () => {

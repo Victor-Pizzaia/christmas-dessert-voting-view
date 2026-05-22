@@ -2,15 +2,14 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SubscribePanel } from "./SubscribePanel";
 import type { Dessert } from "@/types/dessert";
-import type { DessertInSession } from "@/types/voting";
 
-const subscribed: DessertInSession[] = [
-  { id: 1, name: "Pudim", description: "Tasty" },
+const subscribed = [
+  { id: "1", name: "Pudim", subscribed: true },
 ];
 
 const available: Dessert[] = [
-  { id: 1, name: "Pudim", description: "Tasty" },
-  { id: 2, name: "Bolo", description: "Chocolate" },
+  { id: "1", name: "Pudim", description: "Tasty" },
+  { id: "2", name: "Bolo", description: "Chocolate" },
 ];
 
 describe("SubscribePanel", () => {
@@ -38,7 +37,6 @@ describe("SubscribePanel", () => {
       />
     );
     expect(screen.getByText("Pudim")).toBeInTheDocument();
-    expect(screen.getByText("Tasty")).toBeInTheDocument();
   });
 
   it("renders empty message when no subscribed desserts", () => {
@@ -82,7 +80,7 @@ describe("SubscribePanel", () => {
     expect(screen.getAllByText("Subscribe")).toHaveLength(1);
   });
 
-  it("calls onSubscribe when subscribe button is clicked", async () => {
+  it("calls onSubscribe with dessert id and name", async () => {
     const onSubscribe = vi.fn();
     render(
       <SubscribePanel
@@ -95,7 +93,7 @@ describe("SubscribePanel", () => {
     );
 
     await userEvent.click(screen.getByText("Subscribe"));
-    expect(onSubscribe).toHaveBeenCalledWith(2);
+    expect(onSubscribe).toHaveBeenCalledWith("2", "Bolo");
   });
 
   it("renders loading skeletons when loading", () => {

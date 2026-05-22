@@ -29,7 +29,7 @@ export function useDesserts() {
     return response.data;
   }, []);
 
-  const deleteDessert = useCallback(async (id: number) => {
+  const deleteDessert = useCallback(async (id: string) => {
     try {
       await api.delete(`/desserts/${id}`);
       setDesserts((prev) => prev.filter((d) => d.id !== id));

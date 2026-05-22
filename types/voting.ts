@@ -1,41 +1,57 @@
+export interface SubscribedDessert {
+  dessertId: string;
+  name: string;
+  numberOfVotes: number;
+  votePosition: number;
+}
+
 export interface VotingSession {
-  id: number;
-  year: number;
+  id: string;
+  name: string;
+  description?: string;
+  numberOfParticipants: number;
   isOpenToVote: boolean;
-  isOpenToSubscribe: boolean;
+  subscribedDesserts: SubscribedDessert[];
+  closingDate: string;
 }
 
 export interface CreateVotingSessionRequest {
-  year: number;
+  name: string;
+  description?: string;
+  closingDate: string;
 }
 
 export interface SessionDetails {
-  id: number;
-  year: number;
+  id: string;
+  name: string;
+  description?: string;
+  numberOfParticipants: number;
   isOpenToVote: boolean;
-  isOpenToSubscribe: boolean;
-  desserts: DessertInSession[];
+  subscribedDesserts: SubscribedDessert[];
+  closingDate: string;
 }
 
 export interface DessertInSession {
-  id: number;
+  id: string;
   name: string;
   description?: string;
-  owner?: { id: number; name: string };
-  votes?: number;
+  numberOfVotes?: number;
+  votePosition?: number;
   subscribed?: boolean;
 }
 
 export interface VoteResult {
-  dessertId: number;
+  dessertId: string;
   dessertName: string;
   votes: number;
+  votePosition?: number;
 }
 
 export interface CastVoteRequest {
-  dessertId: number;
+  dessertId: { id: string };
 }
 
 export interface SubscribeRequest {
-  dessertId: number;
+  dessertId: { id: string };
+  name: string;
 }

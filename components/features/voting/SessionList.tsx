@@ -62,11 +62,9 @@ export function SessionList({
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {sessions.map((session) => (
         <Card key={session.id}>
-          <h3 className="font-semibold text-zinc-900">
-            Christmas {session.year}
-          </h3>
+          <h3 className="font-semibold text-zinc-900">{session.name}</h3>
           <div className="mt-2 flex gap-2">
-            {session.isOpenToSubscribe && (
+            {!session.isOpenToVote && (
               <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
                 Subscriptions open
               </span>
@@ -74,11 +72,6 @@ export function SessionList({
             {session.isOpenToVote && (
               <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
                 Voting open
-              </span>
-            )}
-            {!session.isOpenToSubscribe && !session.isOpenToVote && (
-              <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-500">
-                Closed
               </span>
             )}
           </div>

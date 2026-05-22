@@ -10,6 +10,7 @@ import {
   setStoredUser,
   type User,
 } from "@/lib/auth";
+import type { LoginResponse } from "@/types/auth";
 
 interface AuthContextData {
   user: User | null;
@@ -32,29 +33,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = useCallback(async (identifier: string, password: string) => {
-    const response = await api.post("/users/login", { identifier, password });
-    const { token, user: userData } = response.data;
-    setToken(token);
+  const fetchUser = useCallback(async () => {
+    const response = await api.get<User>("/users");
+    const userData = response.data;
     setStoredUser(userData);
     setUser(userData);
+    return userData;
   }, []);
+
+  const login = useCallback(async (identifier: string, password: string) => {
+    const response = await api.post<LoginResponse>("/users/login", { identifier, password });
+    const { token } = response.data;
+    setToken(token);
+    await fetchUser();
+  }, [fetchUser]);
 
   const register = useCallback(
     async (name: string, email: string, cpf: string, password: string, favoriteSweets?: string) => {
-      const response = await api.post("/users", {
+      const favorite_sweets = favoriteSweets
+        ? favoriteSweets.split(",").map((s) => s.trim()).filter(Boolean)
+        : [];
+
+      await api.post("/users", {
         name,
         email,
         cpf,
-        password,
-        favoriteSweets,
+        plainPassword: password,
+        favorite_sweets,
       });
-      const { token, user: userData } = response.data;
-      setToken(token);
-      setStoredUser(userData);
-      setUser(userData);
+
+      await login(email, password);
     },
-    []
+    [login]
   );
 
   const logout = useCallback(() => {

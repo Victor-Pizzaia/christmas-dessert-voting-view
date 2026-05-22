@@ -7,22 +7,16 @@ import { useVoting } from "@/hooks/useVoting";
 import { SubscribePanel } from "@/components/features/voting/SubscribePanel";
 import { VotePanel } from "@/components/features/voting/VotePanel";
 import { Card, Button } from "@/components/ui";
-import type { DessertInSession } from "@/types/voting";
+import type { SessionDetails } from "@/types/voting";
 import type { Dessert } from "@/types/dessert";
 import { api } from "@/lib/api";
 
 export default function SessionDetailPage() {
   const params = useParams();
-  const sessionId = Number(params.id);
+  const sessionId = params.id as string;
   const { subscribeDessert, castVote } = useVoting();
 
-  const [session, setSession] = useState<{
-    id: number;
-    year: number;
-    isOpenToVote: boolean;
-    isOpenToSubscribe: boolean;
-    desserts: DessertInSession[];
-  } | null>(null);
+  const [session, setSession] = useState<SessionDetails | null>(null);
   const [available, setAvailable] = useState<Dessert[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,15 +46,15 @@ export default function SessionDetailPage() {
   }, [loadData]);
 
   const handleSubscribe = useCallback(
-    async (dessertId: number) => {
-      await subscribeDessert(sessionId, dessertId);
+    async (dessertId: string, name: string) => {
+      await subscribeDessert(sessionId, dessertId, name);
       await loadData();
     },
     [sessionId, subscribeDessert, loadData]
   );
 
   const handleVote = useCallback(
-    async (dessertId: number) => {
+    async (dessertId: string) => {
       await castVote(sessionId, dessertId);
     },
     [sessionId, castVote]
@@ -104,17 +98,21 @@ export default function SessionDetailPage() {
     );
   }
 
-  const subscribed = session.desserts?.filter((d) => d.subscribed) ?? [];
+  const subscribedDesserts = session.subscribedDesserts?.map((sd) => ({
+    id: sd.dessertId,
+    name: sd.name,
+    subscribed: true,
+  })) ?? [];
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">
-            Christmas {session.year}
+            {session.name}
           </h1>
           <div className="mt-1 flex gap-2">
-            {session.isOpenToSubscribe && (
+            {!session.isOpenToVote && (
               <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
                 Subscriptions open
               </span>
@@ -132,15 +130,15 @@ export default function SessionDetailPage() {
       </div>
 
       <SubscribePanel
-        subscribed={subscribed}
+        subscribed={subscribedDesserts}
         available={available}
         loading={loading}
-        sessionOpen={session.isOpenToSubscribe}
+        sessionOpen={!session.isOpenToVote}
         onSubscribe={handleSubscribe}
       />
 
       <VotePanel
-        subscribed={subscribed}
+        subscribed={subscribedDesserts}
         loading={loading}
         sessionOpen={session.isOpenToVote}
         onVote={handleVote}
