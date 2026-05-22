@@ -38,50 +38,49 @@ Padrão: `<issue-number>-<kebab-case-title>`
 ## ✅ Login corrigido
 PR #29 já corrigiu `email` → `identifier`. Swagger agora disponível.
 
-## 🎯 Tarefa Atual
+## 🎯 Tarefa Atual — Redesign Frontend (P1)
 
-**Tarefa:** Revisar Swagger e corrigir contratos da API no frontend
+**Tarefa:** Refatorar layout e identidade visual conforme PRODUCT_VISION.md
 **Prioridade:** P1
-**Size:** M
-**Branch:** `fix-api-contracts-swagger`
+**Size:** L
+**Branch:** `feat-redesign-palette-layout`
+
+### Contexto
+O frontend atual não reflete a visão do produto. Precisamos refatorar seguindo o documento [PRODUCT_VISION.md](./PRODUCT_VISION.md), que define:
+- Paleta de cores: `#F4D0D9`, `#F4A5B5`, `#B5B8A3`, `#FFF8F0`, `#E8D5C4`, `#C9B1C9`, `#D45769`, `#3D2B1F`, `#7A5C43`
+- Estrutura de páginas: Home institucional → Votações → Doces → Perfil
+- Header com navegação + estado de login
+- Footer institucional
+- UX flow completo (criar votação → link único → fases)
 
 ### Instruções
 
-1. **Suba o backend** para acessar o Swagger:
-   ```bash
-   cd /home/pizzaia/dev/spring/christmas-dessert-voting
-   docker build -t christmas-dessert-voting .
-   docker-compose up -d
-   ```
-   Swagger: http://localhost:8080/api/v1/swagger-ui.html
+1. **Configurar paleta no Tailwind** com os tokens do PRODUCT_VISION.md
 
-2. **Para cada endpoint**, compare o contrato do Swagger com o que o frontend está chamando:
+2. **Criar layout global** (app/layout.tsx):
+   - Header: logo, nav (Votações, Doces), login/perfil
+   - Footer institucional
+   - Wrapper com fundo Vanilla Cream (`#FFF8F0`)
 
-   | Endpoint | Swagger body/params | Frontend atual |
-   |----------|-------------------|----------------|
-   | `POST /users` | { name, cpf, email, password, favoriteSweets[] } | Confira se confere |
-   | `POST /users/login` | { identifier, password } | ✅ já corrigido |
-   | `GET /desserts` | Response: DessertDTO[] | Confira os campos |
-   | `POST /desserts` | { name, description?, recipe? } | Confira |
-   | `DELETE /desserts/{id}` | Path: id (UUID) | Confira |
-   | `POST /voting` | { name, description?, closingDate? } | Confira |
-   | `PATCH /voting/{id}/subscribe` | { dessertId } | Confira |
-   | `POST /voting/{id}/vote` | { dessertId } | Confira |
-   | `GET /voting/{id}/results` | Response: resultados ordenados | Confira |
+3. **Refatorar Home Page** (`app/page.tsx`):
+   - Seção institucional explicando o produto
+   - "Crie desafios de sobremesas com os amigos"
+   - Botão CTA "Começar Agora"
 
-3. **Corrija** no frontend:
-   - Nomes de campos diferentes
-   - Tipos errados
-   - Paths incorretos
-   - Headers faltando
+4. **Refatorar páginas existentes** com a nova paleta:
+   - Login/Register
+   - Votações list/criação/detalhe
+   - Doces list/criação/detalhe
+   - Perfil
 
-4. **Atualize** `types/` para espelhar os DTOs do backend
+5. **Garantir responsividade** (mobile-first)
 
-5. **Valide**: lint → typecheck → test → build
+6. **Validação:**
+   - `npm run lint`
+   - `npm run typecheck`
+   - `npm run build`
 
-6. **Desligue** backend: `docker-compose down`
-
-7. **PR** reportando cada correção feita
+7. **PR** com screenshots das páginas refatoradas
 
 ---
 
