@@ -23,26 +23,26 @@ export default function RegisterPage() {
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = "Nome é obrigatório";
     }
 
     if (!email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Email é obrigatório";
     } else if (!isEmail(email.trim())) {
-      newErrors.email = "Enter a valid email address";
+      newErrors.email = "Digite um email válido";
     }
 
     const rawCPF = cpf.replace(/\D/g, "");
     if (!rawCPF) {
-      newErrors.cpf = "CPF is required";
+      newErrors.cpf = "CPF é obrigatório";
     } else if (!isCPF(rawCPF)) {
-      newErrors.cpf = "Enter a valid CPF";
+      newErrors.cpf = "Digite um CPF válido";
     }
 
     if (!password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Senha é obrigatória";
     } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = "Senha deve ter pelo menos 6 caracteres";
     }
 
     setErrors(newErrors);
@@ -81,10 +81,10 @@ export default function RegisterPage() {
           setErrors((prev) => ({ ...prev, ...fieldErrors }));
         }
         setApiError(
-          data?.message || "Registration failed. Please check your data."
+          data?.message || "Cadastro falhou. Verifique seus dados."
         );
       } else {
-        setApiError("An unexpected error occurred. Please try again.");
+        setApiError("Ocorreu um erro inesperado. Tente novamente.");
       }
     } finally {
       setLoading(false);
@@ -96,16 +96,18 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4">
+    <div className="flex items-start justify-center pt-12 px-4">
       <form
         onSubmit={handleSubmit}
         noValidate
-        className="w-full max-w-sm space-y-6 rounded-lg bg-white p-8 shadow-sm"
+        className="w-full max-w-sm space-y-6 rounded-2xl bg-rose/60 p-8 shadow-sm border border-rose"
       >
-        <h1 className="text-2xl font-bold text-zinc-900">Register</h1>
+        <h1 className="text-2xl font-bold text-dark-choc text-center">
+          Cadastrar
+        </h1>
 
         {apiError && (
-          <p className="rounded bg-red-50 p-3 text-sm text-red-600">
+          <p className="rounded bg-cherry/10 p-3 text-sm text-cherry">
             {apiError}
           </p>
         )}
@@ -113,7 +115,7 @@ export default function RegisterPage() {
         <div className="space-y-2">
           <Input
             id="name"
-            label="Name"
+            label="Nome"
             type="text"
             required
             value={name}
@@ -123,7 +125,7 @@ export default function RegisterPage() {
             }}
           />
           {errors.name && (
-            <p className="text-xs text-red-500">{errors.name}</p>
+            <p className="text-xs text-cherry">{errors.name}</p>
           )}
         </div>
 
@@ -140,7 +142,7 @@ export default function RegisterPage() {
             }}
           />
           {errors.email && (
-            <p className="text-xs text-red-500">{errors.email}</p>
+            <p className="text-xs text-cherry">{errors.email}</p>
           )}
         </div>
 
@@ -158,14 +160,14 @@ export default function RegisterPage() {
             placeholder="000.000.000-00"
           />
           {errors.cpf && (
-            <p className="text-xs text-red-500">{errors.cpf}</p>
+            <p className="text-xs text-cherry">{errors.cpf}</p>
           )}
         </div>
 
         <div className="space-y-2">
           <Input
             id="password"
-            label="Password"
+            label="Senha"
             type="password"
             required
             value={password}
@@ -175,29 +177,29 @@ export default function RegisterPage() {
             }}
           />
           {errors.password && (
-            <p className="text-xs text-red-500">{errors.password}</p>
+            <p className="text-xs text-cherry">{errors.password}</p>
           )}
         </div>
 
         <div className="space-y-2">
           <Input
             id="favoriteSweets"
-            label="Favorite Sweets (optional)"
+            label="Doces Favoritos (opcional)"
             type="text"
             value={favoriteSweets}
             onChange={(e) => setFavoriteSweets(e.target.value)}
-            placeholder="e.g. Panettone, Cheesecake"
+            placeholder="Ex: Panettone, Cheesecake"
           />
         </div>
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
+          {loading ? "Cadastrando..." : "Cadastrar"}
         </Button>
 
-        <p className="text-center text-sm text-zinc-500">
-          Already have an account?{" "}
-          <Link href="/login" className="text-green-600 hover:underline">
-            Sign in
+        <p className="text-center text-sm text-milk-choc">
+          Já tem conta?{" "}
+          <Link href="/login" className="text-cherry hover:underline font-medium">
+            Entrar
           </Link>
         </p>
       </form>

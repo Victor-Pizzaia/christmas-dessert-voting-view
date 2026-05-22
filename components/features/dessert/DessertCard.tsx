@@ -10,15 +10,15 @@ interface DessertCardProps {
 
 export function DessertCard({ dessert, onDelete }: DessertCardProps) {
   return (
-    <div className="relative rounded-lg bg-white p-4 shadow-sm transition-shadow hover:shadow-md border border-zinc-200">
-      <h3 className="font-semibold text-zinc-900">{dessert.name}</h3>
+    <div className="relative rounded-xl bg-rose/60 p-4 shadow-sm transition-shadow hover:shadow-md border border-rose">
+      <h3 className="font-semibold text-dark-choc">{dessert.name}</h3>
 
       {dessert.description && (
-        <p className="mt-1 text-sm text-zinc-500">{dessert.description}</p>
+        <p className="mt-1 text-sm text-milk-choc">{dessert.description}</p>
       )}
 
       {dessert.recipe && (
-        <p className="mt-1 text-xs text-zinc-400">Recipe: {dessert.recipe}</p>
+        <p className="mt-1 text-xs text-milk-choc/60">Receita: {dessert.recipe}</p>
       )}
 
       <div className="mt-3">
@@ -27,7 +27,7 @@ export function DessertCard({ dessert, onDelete }: DessertCardProps) {
           size="sm"
           onClick={() => onDelete(dessert)}
         >
-          Delete
+          Excluir
         </Button>
       </div>
     </div>

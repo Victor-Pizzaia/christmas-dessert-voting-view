@@ -29,7 +29,7 @@ export default function ResultsPage() {
       setSession(sessionRes.data);
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Failed to load results";
+        err instanceof Error ? err.message : "Falha ao carregar resultados";
       setError(message);
     } finally {
       setLoading(false);
@@ -45,12 +45,12 @@ export default function ResultsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-900">
-            Results{session ? ` — ${session.name}` : ""}
+          <h1 className="text-2xl font-bold text-dark-choc">
+            Resultados{session ? ` — ${session.name}` : ""}
           </h1>
         </div>
         <Link href={`/voting/${sessionId}`}>
-          <Button variant="secondary">Back to Session</Button>
+          <Button variant="secondary">Voltar</Button>
         </Link>
       </div>
 

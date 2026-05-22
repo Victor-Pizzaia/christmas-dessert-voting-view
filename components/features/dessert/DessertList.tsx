@@ -26,9 +26,9 @@ export function DessertList({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
           <Card key={i}>
-            <div className="h-4 w-3/4 animate-pulse rounded bg-zinc-200" />
-            <div className="mt-2 h-3 w-1/2 animate-pulse rounded bg-zinc-200" />
-            <div className="mt-4 h-8 w-16 animate-pulse rounded bg-zinc-200" />
+            <div className="h-4 w-3/4 animate-pulse rounded bg-rose" />
+            <div className="mt-2 h-3 w-1/2 animate-pulse rounded bg-rose" />
+            <div className="mt-4 h-8 w-16 animate-pulse rounded bg-rose" />
           </Card>
         ))}
       </div>
@@ -38,12 +38,12 @@ export function DessertList({
   if (error) {
     return (
       <Card className="text-center">
-        <p className="text-red-600">{error}</p>
+        <p className="text-cherry">{error}</p>
         <button
           onClick={onRetry}
-          className="mt-2 text-sm text-green-600 underline hover:text-green-700"
+          className="mt-2 text-sm text-cherry underline hover:text-dark-choc"
         >
-          Try again
+          Tentar novamente
         </button>
       </Card>
     );
@@ -52,9 +52,9 @@ export function DessertList({
   if (isEmpty) {
     return (
       <Card className="text-center">
-        <p className="text-zinc-500">No desserts yet.</p>
-        <p className="mt-1 text-sm text-zinc-400">
-          Create your first dessert above.
+        <p className="text-milk-choc">Nenhum doce cadastrado ainda.</p>
+        <p className="mt-1 text-sm text-milk-choc/60">
+          Crie seu primeiro doce acima.
         </p>
       </Card>
     );

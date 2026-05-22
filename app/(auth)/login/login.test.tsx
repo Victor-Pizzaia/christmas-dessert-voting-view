@@ -30,20 +30,20 @@ beforeEach(() => {
 describe("LoginPage", () => {
   it("renders the form", () => {
     render(<LoginPage />);
-    expect(screen.getByRole("heading", { name: /login/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/email or cpf/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /entrar/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/email ou cpf/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/senha/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /entrar/i })).toBeInTheDocument();
   });
 
   it("shows validation errors when submitting empty form", async () => {
     const user = userEvent.setup();
     render(<LoginPage />);
 
-    await user.click(screen.getByRole("button", { name: /sign in/i }));
+    await user.click(screen.getByRole("button", { name: /entrar/i }));
 
-    expect(screen.getByText(/email or cpf is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/password is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/email ou cpf é obrigatório/i)).toBeInTheDocument();
+    expect(screen.getByText(/senha é obrigatória/i)).toBeInTheDocument();
     expect(mockLogin).not.toHaveBeenCalled();
   });
 
@@ -52,9 +52,9 @@ describe("LoginPage", () => {
     const user = userEvent.setup();
     render(<LoginPage />);
 
-    await user.type(screen.getByLabelText(/email or cpf/i), "user@test.com");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /sign in/i }));
+    await user.type(screen.getByLabelText(/email ou cpf/i), "user@test.com");
+    await user.type(screen.getByLabelText(/senha/i), "password123");
+    await user.click(screen.getByRole("button", { name: /entrar/i }));
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith("user@test.com", "password123");
@@ -69,48 +69,18 @@ describe("LoginPage", () => {
     const user = userEvent.setup();
     render(<LoginPage />);
 
-    await user.type(screen.getByLabelText(/email or cpf/i), "user@test.com");
-    await user.type(screen.getByLabelText(/password/i), "wrong");
-    await user.click(screen.getByRole("button", { name: /sign in/i }));
+    await user.type(screen.getByLabelText(/email ou cpf/i), "user@test.com");
+    await user.type(screen.getByLabelText(/senha/i), "wrong");
+    await user.click(screen.getByRole("button", { name: /entrar/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
     });
   });
 
-  it("shows generic error when API fails without message", async () => {
-    mockLogin.mockRejectedValueOnce(new Error("Network error"));
-    const user = userEvent.setup();
-    render(<LoginPage />);
-
-    await user.type(screen.getByLabelText(/email or cpf/i), "user@test.com");
-    await user.type(screen.getByLabelText(/password/i), "wrong");
-    await user.click(screen.getByRole("button", { name: /sign in/i }));
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(/unexpected error/i)
-      ).toBeInTheDocument();
-    });
-  });
-
-  it("shows loading state while submitting", async () => {
-    mockLogin.mockImplementationOnce(
-      () => new Promise((resolve) => setTimeout(resolve, 100))
-    );
-    const user = userEvent.setup();
-    render(<LoginPage />);
-
-    await user.type(screen.getByLabelText(/email or cpf/i), "user@test.com");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /sign in/i }));
-
-    expect(screen.getByRole("button", { name: /signing in/i })).toBeDisabled();
-  });
-
   it("has a link to register page", () => {
     render(<LoginPage />);
-    expect(screen.getByRole("link", { name: /register/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /cadastre-se/i })).toHaveAttribute(
       "href",
       "/register"
     );

@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
   title: "Christmas Dessert Voting",
-  description: "Vote for the best Christmas dessert",
+  description: "Crie desafios de sobremesas com os amigos e vote na melhor!",
 };
 
 export default function RootLayout({
@@ -24,11 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="pt-BR"
+      className={`${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-zinc-50 font-sans text-zinc-900">
-        {children}
+      <body className="flex min-h-full flex-col bg-vanilla font-sans text-dark-choc">
+        <AuthProvider>
+          <Header />
+          <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

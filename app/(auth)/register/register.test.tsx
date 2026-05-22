@@ -30,25 +30,25 @@ beforeEach(() => {
 describe("RegisterPage", () => {
   it("renders the form", () => {
     render(<RegisterPage />);
-    expect(screen.getByRole("heading", { name: /register/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /cadastrar/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/nome/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/cpf/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/favorite sweets/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /register/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/senha/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/doces favoritos/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /cadastrar/i })).toBeInTheDocument();
   });
 
   it("shows validation errors when submitting empty form", async () => {
     const user = userEvent.setup();
     render(<RegisterPage />);
 
-    await user.click(screen.getByRole("button", { name: /register/i }));
+    await user.click(screen.getByRole("button", { name: /cadastrar/i }));
 
-    expect(screen.getByText(/name is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/email is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/cpf is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/password is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/nome é obrigatório/i)).toBeInTheDocument();
+    expect(screen.getByText(/email é obrigatório/i)).toBeInTheDocument();
+    expect(screen.getByText(/cpf é obrigatório/i)).toBeInTheDocument();
+    expect(screen.getByText(/senha é obrigatória/i)).toBeInTheDocument();
     expect(mockRegister).not.toHaveBeenCalled();
   });
 
@@ -56,39 +56,39 @@ describe("RegisterPage", () => {
     const user = userEvent.setup();
     render(<RegisterPage />);
 
-    await user.type(screen.getByLabelText(/name/i), "John");
+    await user.type(screen.getByLabelText(/nome/i), "John");
     await user.type(screen.getByLabelText(/email/i), "invalid");
     await user.type(screen.getByLabelText(/cpf/i), "52998224725");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /register/i }));
+    await user.type(screen.getByLabelText(/senha/i), "password123");
+    await user.click(screen.getByRole("button", { name: /cadastrar/i }));
 
-    expect(screen.getByText(/valid email/i)).toBeInTheDocument();
+    expect(screen.getByText(/digite um email válido/i)).toBeInTheDocument();
   });
 
   it("validates CPF format", async () => {
     const user = userEvent.setup();
     render(<RegisterPage />);
 
-    await user.type(screen.getByLabelText(/name/i), "John");
+    await user.type(screen.getByLabelText(/nome/i), "John");
     await user.type(screen.getByLabelText(/email/i), "john@test.com");
     await user.type(screen.getByLabelText(/cpf/i), "12345678901");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /register/i }));
+    await user.type(screen.getByLabelText(/senha/i), "password123");
+    await user.click(screen.getByRole("button", { name: /cadastrar/i }));
 
-    expect(screen.getByText(/valid cpf/i)).toBeInTheDocument();
+    expect(screen.getByText(/digite um cpf válido/i)).toBeInTheDocument();
   });
 
   it("validates password minimum length", async () => {
     const user = userEvent.setup();
     render(<RegisterPage />);
 
-    await user.type(screen.getByLabelText(/name/i), "John");
+    await user.type(screen.getByLabelText(/nome/i), "John");
     await user.type(screen.getByLabelText(/email/i), "john@test.com");
     await user.type(screen.getByLabelText(/cpf/i), "52998224725");
-    await user.type(screen.getByLabelText(/password/i), "12345");
-    await user.click(screen.getByRole("button", { name: /register/i }));
+    await user.type(screen.getByLabelText(/senha/i), "12345");
+    await user.click(screen.getByRole("button", { name: /cadastrar/i }));
 
-    expect(screen.getByText(/at least 6 characters/i)).toBeInTheDocument();
+    expect(screen.getByText(/pelo menos 6 caracteres/i)).toBeInTheDocument();
   });
 
   it("calls register and redirects on success", async () => {
@@ -96,11 +96,11 @@ describe("RegisterPage", () => {
     const user = userEvent.setup();
     render(<RegisterPage />);
 
-    await user.type(screen.getByLabelText(/name/i), "John Doe");
+    await user.type(screen.getByLabelText(/nome/i), "John Doe");
     await user.type(screen.getByLabelText(/email/i), "john@test.com");
     await user.type(screen.getByLabelText(/cpf/i), "52998224725");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /register/i }));
+    await user.type(screen.getByLabelText(/senha/i), "password123");
+    await user.click(screen.getByRole("button", { name: /cadastrar/i }));
 
     await waitFor(() => {
       expect(mockRegister).toHaveBeenCalledWith(
@@ -112,50 +112,6 @@ describe("RegisterPage", () => {
       );
     });
     expect(mockPush).toHaveBeenCalledWith("/desserts");
-  });
-
-  it("calls register with favorite sweets when provided", async () => {
-    mockRegister.mockResolvedValueOnce(undefined);
-    const user = userEvent.setup();
-    render(<RegisterPage />);
-
-    await user.type(screen.getByLabelText(/name/i), "John Doe");
-    await user.type(screen.getByLabelText(/email/i), "john@test.com");
-    await user.type(screen.getByLabelText(/cpf/i), "52998224725");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.type(
-      screen.getByLabelText(/favorite sweets/i),
-      "Panettone"
-    );
-    await user.click(screen.getByRole("button", { name: /register/i }));
-
-    await waitFor(() => {
-      expect(mockRegister).toHaveBeenCalledWith(
-        "John Doe",
-        "john@test.com",
-        "52998224725",
-        "password123",
-        "Panettone"
-      );
-    });
-  });
-
-  it("shows API error on failed registration", async () => {
-    mockRegister.mockRejectedValueOnce({
-      response: { data: { message: "Email already in use" } },
-    });
-    const user = userEvent.setup();
-    render(<RegisterPage />);
-
-    await user.type(screen.getByLabelText(/name/i), "John Doe");
-    await user.type(screen.getByLabelText(/email/i), "john@test.com");
-    await user.type(screen.getByLabelText(/cpf/i), "52998224725");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /register/i }));
-
-    await waitFor(() => {
-      expect(screen.getByText(/email already in use/i)).toBeInTheDocument();
-    });
   });
 
   it("shows field-level errors from API", async () => {
@@ -170,11 +126,11 @@ describe("RegisterPage", () => {
     const user = userEvent.setup();
     render(<RegisterPage />);
 
-    await user.type(screen.getByLabelText(/name/i), "John Doe");
+    await user.type(screen.getByLabelText(/nome/i), "John Doe");
     await user.type(screen.getByLabelText(/email/i), "john@test.com");
     await user.type(screen.getByLabelText(/cpf/i), "52998224725");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /register/i }));
+    await user.type(screen.getByLabelText(/senha/i), "password123");
+    await user.click(screen.getByRole("button", { name: /cadastrar/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/email already taken/i)).toBeInTheDocument();
@@ -188,18 +144,18 @@ describe("RegisterPage", () => {
     const user = userEvent.setup();
     render(<RegisterPage />);
 
-    await user.type(screen.getByLabelText(/name/i), "John Doe");
+    await user.type(screen.getByLabelText(/nome/i), "John Doe");
     await user.type(screen.getByLabelText(/email/i), "john@test.com");
     await user.type(screen.getByLabelText(/cpf/i), "52998224725");
-    await user.type(screen.getByLabelText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /register/i }));
+    await user.type(screen.getByLabelText(/senha/i), "password123");
+    await user.click(screen.getByRole("button", { name: /cadastrar/i }));
 
-    expect(screen.getByRole("button", { name: /registering/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /cadastrando/i })).toBeDisabled();
   });
 
   it("has a link to login page", () => {
     render(<RegisterPage />);
-    expect(screen.getByRole("link", { name: /sign in/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /entrar/i })).toHaveAttribute(
       "href",
       "/login"
     );

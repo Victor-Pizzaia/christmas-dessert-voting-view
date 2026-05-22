@@ -10,13 +10,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants = {
   primary:
-    "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500",
+    "bg-strawberry text-white hover:bg-cherry focus:ring-strawberry shadow-sm",
   secondary:
-    "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 focus:ring-zinc-400",
+    "bg-caramel text-dark-choc hover:bg-rose focus:ring-caramel",
   ghost:
-    "bg-transparent text-zinc-600 hover:bg-zinc-100 focus:ring-zinc-400",
+    "bg-transparent text-milk-choc hover:bg-rose/50 focus:ring-rose",
   danger:
-    "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+    "bg-cherry text-white hover:bg-red-700 focus:ring-cherry",
 };
 
 const sizes = {
